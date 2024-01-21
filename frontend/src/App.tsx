@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Note } from '../models/note';
+import { INote } from './models/note';
+import Note from './components/Note';
 import './App.css';
 
 function App() {
-	const [notes, setNotes] = useState<Note[]>([]);
+	const [notes, setNotes] = useState<INote[]>([]);
 
 	useEffect(() => {
 		const getNotes = async () => {
@@ -25,10 +26,9 @@ function App() {
 
 	return (
 		<div className='App'>
-			<ul>
-				{notes &&
-					notes.map((note) => <li key={note._id}>{note.description}</li>)}
-			</ul>
+			{notes.map((note) => (
+				<Note key={note._id} note={note} />
+			))}
 		</div>
 	);
 }

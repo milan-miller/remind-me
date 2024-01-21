@@ -1,7 +1,7 @@
-export interface Note {
+export interface INote {
 	_id: string;
 	title: string;
 	description: string;
 	createdAt: string;
-	updateAt: string;
+	updatedAt: string;
 }

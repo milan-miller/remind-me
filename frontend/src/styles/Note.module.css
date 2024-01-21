@@ -1,0 +1,10 @@
+.card {
+	padding: 2rem;
+	background-color: #eee7d7;
+	border: 1px solid black;
+	margin: 1rem;
+}
+
+.cardDescription {
+	white-space: pre-line;
+}
