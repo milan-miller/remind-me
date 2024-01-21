@@ -1,24 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Note } from '../models/note';
 import './App.css';
 
 function App() {
-	const [clickCount, setClickCount] = useState(0);
+	const [notes, setNotes] = useState<Note[]>([]);
+
+	useEffect(() => {
+		const getNotes = async () => {
+			try {
+				const response = await fetch('http://localhost:5000/api/notes', {
+					method: 'GET',
+				});
+
+				const notes = await response.json();
+
+				setNotes(notes);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		getNotes();
+	}, []);
 
 	return (
 		<div className='App'>
-			<p>Count: {clickCount}</p>
-			<button
-				disabled={clickCount === 10}
-				onClick={() => setClickCount(clickCount + 1)}
-			>
-				+
-			</button>
-			<button
-				disabled={clickCount === 0}
-				onClick={() => setClickCount(clickCount - 1)}
-			>
-				-
-			</button>
+			<ul>
+				{notes &&
+					notes.map((note) => <li key={note._id}>{note.description}</li>)}
+			</ul>
 		</div>
 	);
 }
