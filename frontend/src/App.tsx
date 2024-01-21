@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { INote } from './models/note';
 import Note from './components/Note';
 import './App.css';
+import NoteList from './components/NoteList';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
@@ -26,9 +27,11 @@ function App() {
 
 	return (
 		<div className='App'>
-			{notes.map((note) => (
-				<Note key={note._id} note={note} />
-			))}
+			<NoteList>
+				{notes.map((note) => (
+					<Note key={note._id} note={note} />
+				))}
+			</NoteList>
 		</div>
 	);
 }

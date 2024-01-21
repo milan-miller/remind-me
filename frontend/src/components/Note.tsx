@@ -1,5 +1,6 @@
 import { INote } from '../models/note';
 import styles from '../styles/Note.module.css';
+import { formatDate } from '../utils/fortmatDate';
 
 interface Props {
 	note: INote;
@@ -8,12 +9,19 @@ interface Props {
 const Note = ({ note }: Props) => {
 	const { title, description, createdAt, updatedAt } = note;
 
+	let noteDate =
+		updatedAt > createdAt
+			? `Updated: ${formatDate(updatedAt)}`
+			: `Created: ${formatDate(createdAt)}`;
+
+	console.log(noteDate);
 	return (
 		<div className={styles.card}>
-			<p>{title}</p>
-			<p>{description}</p>
-			<p>{createdAt}</p>
-			<p>{updatedAt}</p>
+			<div className={styles.cardBody}>
+				<p>{title}</p>
+				<p>{description}</p>
+			</div>
+			<p>{noteDate}</p>
 		</div>
 	);
 };
