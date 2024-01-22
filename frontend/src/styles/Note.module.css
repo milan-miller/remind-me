@@ -1,6 +1,6 @@
 .card {
 	padding: 2rem;
-	background-color: #eee7d7;
+	background-color: #fff7dc;
 	box-shadow: 1px 2px 3px;
 	margin: 1rem;
 	display: flex;
@@ -27,4 +27,27 @@
 
 .cardDescription {
 	white-space: pre-line;
+}
+
+.cardFunctions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.cardTrashcan {
+	cursor: pointer;
+	fill: #ff0000;
+	width: 1.5rem;
+	height: 1.5rem;
+	pointer-events: none;
+}
+
+.cardPencil {
+	cursor: pointer;
+	fill: #7cfc00;
+	width: 1.5rem;
+	height: 1.5rem;
+	pointer-events: none;
+	margin-right: 5px;
 }

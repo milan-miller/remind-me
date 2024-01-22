@@ -5,6 +5,7 @@ import './App.css';
 import NoteList from './components/NoteList';
 import * as NotesApi from './network/notes_api';
 import AddNoteModal from './components/AddNoteModal';
+import logo from './assets/remind-me-logo.png';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
@@ -32,6 +33,7 @@ function App() {
 					cancelModal={() => setShowAddNoteModal(false)}
 				/>
 			)}
+			<img src={logo} alt='logo' className='logo' />
 			<button
 				className='button'
 				onClick={() => setShowAddNoteModal(!showAddNoteModal)}
