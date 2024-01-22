@@ -37,23 +37,20 @@
 	align-items: center;
 }
 
-.cardFunctions:hover {
-	cursor: pointer;
-}
-
 .cardTrashcan {
-	cursor: pointer;
 	fill: #ff0000;
 	width: 1.5rem;
 	height: 1.5rem;
-	pointer-events: none;
 }
 
 .cardPencil {
-	cursor: pointer;
 	fill: #7cfc00;
 	width: 1.5rem;
 	height: 1.5rem;
-	pointer-events: none;
 	margin-right: 5px;
+}
+
+.cardTrashcan:hover,
+.cardPencil:hover {
+	cursor: pointer;
 }

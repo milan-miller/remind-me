@@ -19,8 +19,8 @@ const Note = ({ note }: Props) => {
 	return (
 		<div className={styles.card}>
 			<div className={styles.cardFunctions}>
-				<Pencil className={styles.cardPencil} />
-				<TrashCan className={styles.cardTrashcan} />
+				<Pencil className={styles.cardPencil} title='edit' />
+				<TrashCan className={styles.cardTrashcan} title='delete' />
 			</div>
 			<div className={styles.cardBody}>
 				<p>{title}</p>
