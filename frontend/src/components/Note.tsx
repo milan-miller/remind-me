@@ -16,7 +16,6 @@ const Note = ({ note }: Props) => {
 			? `Updated: ${formatDate(updatedAt)}`
 			: `Created: ${formatDate(createdAt)}`;
 
-	console.log(noteDate);
 	return (
 		<div className={styles.card}>
 			<div className={styles.cardFunctions}>
