@@ -25,6 +25,15 @@ function App() {
 		getNotes();
 	}, []);
 
+	useEffect(() => {
+		if (showAddNoteModal) {
+			document.body.style.overflow = 'hidden';
+			return () => {
+				document.body.style.overflow = 'scroll';
+			};
+		}
+	}, [showAddNoteModal]);
+
 	return (
 		<div className='App'>
 			{showAddNoteModal && (
