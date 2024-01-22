@@ -1,0 +1,58 @@
+.modal {
+	background-color: rgba(0, 0, 0, 0.341);
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+}
+
+.modalButtons {
+	display: flex;
+	justify-content: space-between;
+}
+
+.modalCancelButton,
+.modalAddButton {
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 20px;
+	color: #fff;
+	align-self: flex-end;
+	cursor: pointer;
+}
+
+.modalAddButton {
+	background-color: #1b75d0;
+	min-width: 5rem;
+}
+
+.modalCancelButton {
+	background-color: #ff0000;
+}
+
+.modalForm {
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	color: #282828;
+	align-self: start;
+	margin-top: 4rem;
+	padding: 3rem 5rem;
+	border-radius: 1rem;
+	position: absolute;
+}
+
+.modalInput {
+	margin: 1rem 0rem;
+	border-radius: 5px;
+	border: 1px solid black;
+	padding: 0.2rem;
+}
+
+.modalInputError {
+	position: absolute;
+	bottom: 8px;
+	color: red;
+}

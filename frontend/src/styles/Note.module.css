@@ -9,6 +9,7 @@
 	border-radius: 10px;
 	color: #404040;
 	transition: all ease-in 0.2s;
+	max-width: 14rem;
 }
 
 .card:hover {

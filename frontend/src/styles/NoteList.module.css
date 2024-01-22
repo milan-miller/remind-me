@@ -1,7 +1,12 @@
 .noteList {
-	width: 80%;
 	display: flex;
-	margin: 0px auto;
-	flex-wrap: wrap;
 	justify-content: center;
+	margin: 0px auto;
+}
+
+.noteListContainer {
+	display: grid;
+	grid-template-columns: repeat(5, auto);
+	gap: 0.5rem;
+	justify-content: space-evenly;
 }

@@ -6,7 +6,11 @@ interface Props {
 }
 
 const NoteList = ({ children }: Props) => {
-	return <div className={styles.noteList}>{children}</div>;
+	return (
+		<div className={styles.noteList}>
+			<div className={styles.noteListContainer}>{children}</div>
+		</div>
+	);
 };
 
 export default NoteList;
