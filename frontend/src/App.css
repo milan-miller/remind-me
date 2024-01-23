@@ -37,6 +37,10 @@
 	padding: 1rem;
 }
 
+.error {
+	color: #000;
+}
+
 @media only screen and (max-width: 604px) {
 	.logo {
 		width: 16rem;
