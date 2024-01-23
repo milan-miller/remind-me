@@ -108,14 +108,14 @@ const AddEditNoteModal = ({
 					id='description'
 					placeholder='Description'
 					onKeyDown={(e) => {
-						if (description.length === 50 && e.key !== 'Backspace') {
+						if (description.length === 100 && e.key !== 'Backspace') {
 							setTextLimit(true);
 						} else {
 							setTextLimit(false);
 						}
 					}}
 					onChange={(e) => {
-						if (description.length <= 50 && !textLimit) {
+						if (description.length <= 100 && !textLimit) {
 							setInputError(false);
 							setDescription(e.target.value);
 						}
@@ -123,12 +123,12 @@ const AddEditNoteModal = ({
 				/>
 				<p
 					style={
-						description.length === 50
+						description.length === 100
 							? { color: '#ff0000' }
 							: { color: 'inherit' }
 					}
 					className={styles.modalTextLimit}
-				>{`${description.length}/50`}</p>
+				>{`${description.length}/100`}</p>
 				<div className={styles.modalButtons}>
 					<button
 						className={styles.modalCancelButton}
