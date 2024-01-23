@@ -4,12 +4,13 @@ import Note from './components/Note';
 import './App.css';
 import NoteList from './components/NoteList';
 import * as NotesApi from './network/notes_api';
-import AddNoteModal from './components/AddNoteModal';
 import logo from './assets/remind-me-logo.png';
+import AddEditNoteModal from './components/AddEditNoteModal';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
 	const [showAddNoteModal, setShowAddNoteModal] = useState(false);
+	const [noteToEdit, setNoteToEdit] = useState<INote | null>(null);
 
 	useEffect(() => {
 		const getNotes = async () => {
@@ -25,14 +26,39 @@ function App() {
 		getNotes();
 	}, []);
 
+	const deleteNote = async (note: INote) => {
+		try {
+			await NotesApi.deleteNote(note._id);
+			setNotes(notes.filter((existingNote) => existingNote._id !== note._id));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div className='App'>
-			{showAddNoteModal && (
-				<AddNoteModal
+			{showAddNoteModal && noteToEdit === null && (
+				<AddEditNoteModal
 					setNotes={(note) => setNotes([...notes, note])}
 					cancelModal={() => setShowAddNoteModal(false)}
+					setNoteToEdit={() => setNoteToEdit(null)}
 				/>
 			)}
+			{showAddNoteModal && noteToEdit && (
+				<AddEditNoteModal
+					setNotes={(note) => {
+						setNotes(
+							notes.map((existingNote) =>
+								existingNote._id === note._id ? note : existingNote
+							)
+						);
+					}}
+					cancelModal={() => setShowAddNoteModal(false)}
+					noteToEdit={noteToEdit}
+					setNoteToEdit={() => setNoteToEdit(null)}
+				/>
+			)}
+
 			<img src={logo} alt='logo' className='logo' />
 			<button
 				className='button'
@@ -42,7 +68,13 @@ function App() {
 			</button>
 			<NoteList>
 				{notes.map((note) => (
-					<Note key={note._id} note={note} />
+					<Note
+						key={note._id}
+						note={note}
+						onDeleteNoteClicked={deleteNote}
+						setNoteToEdit={(note: INote) => setNoteToEdit(note)}
+						showAddNoteModal={() => setShowAddNoteModal(true)}
+					/>
 				))}
 			</NoteList>
 		</div>

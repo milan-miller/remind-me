@@ -1,48 +1,79 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import styles from '../styles/AddNoteModal.module.css';
 import * as NotesApi from '../network/notes_api';
 import { INote } from '../models/note';
 
 interface Props {
+	noteToEdit?: INote;
 	cancelModal: () => void;
 	setNotes: (note: INote) => void;
+	setNoteToEdit: () => void;
 }
 
-const AddNoteModal = ({ cancelModal, setNotes }: Props) => {
+const AddEditNoteModal = ({
+	noteToEdit,
+	cancelModal,
+	setNotes,
+	setNoteToEdit,
+}: Props) => {
 	const modalBackground = useRef<HTMLDivElement>(null);
-	const titleInput = useRef<HTMLInputElement>(null);
-	const descriptionInput = useRef<HTMLTextAreaElement>(null);
 	const [inputError, setInputError] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
 
 	const closeDownModal = (
 		event: React.MouseEvent<HTMLDivElement, MouseEvent>
 	) => {
 		if (event.target === modalBackground.current) {
 			cancelModal();
+			setNoteToEdit();
 		}
 	};
+
+	useEffect(() => {
+		if (noteToEdit) {
+			setTitle(noteToEdit.title);
+			setDescription(noteToEdit.description);
+		}
+	}, [noteToEdit]);
 
 	const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		try {
-			if (!titleInput.current?.value || !descriptionInput.current?.value) {
-				setInputError(true);
-				return;
-			}
-
+			let noteResponse: INote;
 			setIsFetching(true);
 
-			const note = {
-				title: titleInput.current.value,
-				description: descriptionInput.current.value,
-			};
+			if (noteToEdit) {
+				if (!title || !description) {
+					setInputError(true);
+					return;
+				}
 
-			const newNote = (await NotesApi.createNote(note)) as INote;
-			cancelModal();
+				noteResponse = await NotesApi.updateNote(noteToEdit._id, {
+					title,
+					description,
+				});
 
-			setNotes(newNote);
+				cancelModal();
+				setNotes(noteResponse);
+				setNoteToEdit();
+			} else {
+				if (!title || !description) {
+					setInputError(true);
+					return;
+				}
+
+				const note = {
+					title,
+					description,
+				};
+
+				noteResponse = (await NotesApi.createNote(note)) as INote;
+				setNotes(noteResponse);
+				cancelModal();
+			}
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -61,33 +92,43 @@ const AddNoteModal = ({ cancelModal, setNotes }: Props) => {
 				className={styles.modalForm}
 				onSubmit={onSubmitHandler}
 			>
-				<h2>Add Note</h2>
+				<h2>{noteToEdit ? 'Edit Note' : 'Add Note'}</h2>
 				<label htmlFor='title'>Title: </label>
 				<input
-					ref={titleInput}
+					value={title}
 					className={styles.modalInput}
 					id='title'
 					type='text'
 					placeholder='Title'
+					onChange={(e) => setTitle(e.target.value)}
 				/>
 				<label htmlFor='description'>Description: </label>
 				<textarea
-					ref={descriptionInput}
+					value={description}
 					className={styles.modalInput}
 					id='description'
 					placeholder='Description'
+					onChange={(e) => setDescription(e.target.value)}
 				/>
 				<div className={styles.modalButtons}>
-					<button className={styles.modalCancelButton} onClick={cancelModal}>
+					<button
+						className={styles.modalCancelButton}
+						onClick={() => {
+							cancelModal();
+							setNoteToEdit();
+						}}
+					>
 						CANCEL
 					</button>
+
 					<button
 						className={styles.modalAddButton}
 						type='submit'
 						form='noteForm'
 						disabled={isFetching}
+						style={{ backgroundColor: noteToEdit && '#7cfc00' }}
 					>
-						{isFetching ? '...' : 'ADD'}
+						{isFetching ? '...' : noteToEdit ? 'EDIT' : 'ADD'}
 					</button>
 				</div>
 				{inputError && (
@@ -100,4 +141,4 @@ const AddNoteModal = ({ cancelModal, setNotes }: Props) => {
 	);
 };
 
-export default AddNoteModal;
+export default AddEditNoteModal;
