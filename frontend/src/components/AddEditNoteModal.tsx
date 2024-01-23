@@ -21,6 +21,7 @@ const AddEditNoteModal = ({
 	const [isFetching, setIsFetching] = useState(false);
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
+	const [textLimit, setTextLimit] = useState(false);
 
 	const closeDownModal = (
 		event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -41,16 +42,16 @@ const AddEditNoteModal = ({
 	const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		if (!title || !description) {
+			setInputError(true);
+			return;
+		}
+
 		try {
 			let noteResponse: INote;
 			setIsFetching(true);
 
 			if (noteToEdit) {
-				if (!title || !description) {
-					setInputError(true);
-					return;
-				}
-
 				noteResponse = await NotesApi.updateNote(noteToEdit._id, {
 					title,
 					description,
@@ -60,11 +61,6 @@ const AddEditNoteModal = ({
 				setNotes(noteResponse);
 				setNoteToEdit();
 			} else {
-				if (!title || !description) {
-					setInputError(true);
-					return;
-				}
-
 				const note = {
 					title,
 					description,
@@ -100,7 +96,10 @@ const AddEditNoteModal = ({
 					id='title'
 					type='text'
 					placeholder='Title'
-					onChange={(e) => setTitle(e.target.value)}
+					onChange={(e) => {
+						setInputError(false);
+						setTitle(e.target.value);
+					}}
 				/>
 				<label htmlFor='description'>Description: </label>
 				<textarea
@@ -108,8 +107,28 @@ const AddEditNoteModal = ({
 					className={styles.modalInput}
 					id='description'
 					placeholder='Description'
-					onChange={(e) => setDescription(e.target.value)}
+					onKeyDown={(e) => {
+						if (description.length === 50 && e.key !== 'Backspace') {
+							setTextLimit(true);
+						} else {
+							setTextLimit(false);
+						}
+					}}
+					onChange={(e) => {
+						if (description.length <= 50 && !textLimit) {
+							setInputError(false);
+							setDescription(e.target.value);
+						}
+					}}
 				/>
+				<p
+					style={
+						description.length === 50
+							? { color: '#ff0000' }
+							: { color: 'inherit' }
+					}
+					className={styles.modalTextLimit}
+				>{`${description.length}/50`}</p>
 				<div className={styles.modalButtons}>
 					<button
 						className={styles.modalCancelButton}
