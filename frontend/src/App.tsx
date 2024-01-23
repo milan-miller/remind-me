@@ -6,6 +6,7 @@ import NoteList from './components/NoteList';
 import * as NotesApi from './network/notes_api';
 import logo from './assets/remind-me-logo.png';
 import AddEditNoteModal from './components/AddEditNoteModal';
+import { ReactComponent as Plus } from './assets/plus.svg';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
@@ -64,6 +65,7 @@ function App() {
 				className='button'
 				onClick={() => setShowAddNoteModal(!showAddNoteModal)}
 			>
+				<Plus className='plus' />
 				Add Note
 			</button>
 			<NoteList>
