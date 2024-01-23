@@ -2,8 +2,8 @@ import { InferSchemaType, Schema, model } from 'mongoose';
 
 const noteSchema = new Schema(
 	{
-		title: { type: String, require: true },
-		description: { type: String, require: true },
+		title: { type: String, required: true },
+		description: { type: String, required: true },
 	},
 	{ timestamps: true }
 );
