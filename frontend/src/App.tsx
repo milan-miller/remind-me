@@ -8,6 +8,8 @@ import logo from './assets/remind-me-logo.png';
 import AddEditNoteModal from './components/AddEditNoteModal';
 import { ReactComponent as Plus } from './assets/plus.svg';
 import { MutatingDots } from 'react-loader-spinner';
+import AuthScreen from './components/AuthScreen';
+import { User } from './models/user';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
@@ -15,6 +17,7 @@ function App() {
 	const [showNotesLoadingError, setShowNotesLoadingError] = useState(false);
 	const [showAddNoteModal, setShowAddNoteModal] = useState(false);
 	const [noteToEdit, setNoteToEdit] = useState<INote | null>(null);
+	const [authenticatedUser, setAutheticatedUser] = useState<User | null>(null);
 
 	useEffect(() => {
 		const getNotes = async () => {
@@ -103,6 +106,10 @@ function App() {
 					))}
 				</NoteList>
 			)}
+			<AuthScreen
+				register={true}
+				onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
+			/>
 		</div>
 	);
 }

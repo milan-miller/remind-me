@@ -1,0 +1,72 @@
+.authScreen {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 2rem;
+	padding: 2rem;
+	align-items: center;
+	border-radius: 10px;
+	box-shadow: 2px 5px 7px 3px rgba(0, 0, 0, 0.2);
+	position: relative;
+	overflow: hidden;
+	width: 20rem;
+}
+
+.authScreen::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	clip-path: ellipse(89% 28% at 21% 6%);
+	background-color: #bf5f8d;
+	margin-bottom: 5rem;
+}
+
+.authScreenHeader {
+	color: #fff;
+	margin-bottom: 3rem;
+}
+
+.authScreen input {
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+	border-radius: 10px;
+	box-shadow: 1px 2px 7px #000;
+	border: none;
+}
+
+.authScreen input:focus {
+	outline: none;
+}
+
+.authScreenButton {
+	background: #0f6cff;
+	color: #fff;
+	align-self: flex-end;
+	border: none;
+	padding: 0.5rem;
+	border-radius: 10px;
+	cursor: pointer;
+	box-shadow: 2px 5px 7px 3px rgba(0, 0, 0, 0.2);
+	min-width: 5rem;
+}
+
+.authScreenInput {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 1rem;
+	position: relative;
+	align-items: center;
+	margin-top: 1rem;
+}
+
+.authScreenEye {
+	position: absolute;
+	bottom: 1.3rem;
+	right: 0.2rem;
+	fill: #bf5f8d;
+	cursor: pointer;
+}

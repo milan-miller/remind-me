@@ -58,7 +58,7 @@
 	margin: 1rem 0rem;
 	border-radius: 5px;
 	border: none;
-	box-shadow: 1px 2px 7px black;
+	box-shadow: 1px 2px 7px #000;
 	padding: 0.4rem;
 	resize: none;
 }
