@@ -107,7 +107,7 @@ function App() {
 				</NoteList>
 			)}
 			<AuthScreen
-				register={false}
+				register={true}
 				onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
 			/>
 		</div>

@@ -9,6 +9,8 @@
 	position: relative;
 	overflow: hidden;
 	width: 20rem;
+	min-height: 28rem;
+	justify-content: space-between;
 }
 
 .authScreen::before {
@@ -69,4 +71,11 @@
 	right: 0.2rem;
 	fill: #bf5f8d;
 	cursor: pointer;
+}
+
+.authScreenEmailError {
+	color: #ff0000;
+	font-weight: bold;
+	position: absolute;
+	bottom: -35px;
 }

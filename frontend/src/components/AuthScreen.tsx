@@ -3,6 +3,7 @@ import * as UsersApi from '../network/users_api';
 import { User } from '../models/user';
 import styles from '../styles/AuthScreen.module.css';
 import { ReactComponent as Eye } from '../assets/eye.svg';
+import { isValidEmail } from '../utils/isValidEmail';
 
 interface Props {
 	register: boolean;
@@ -15,13 +16,20 @@ const AuthModal = ({ register, onSuccessfulAuthentication }: Props) => {
 	const [password, setPassword] = useState('');
 	const [revealPassword, setRevealPassword] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
+	const [invalidEmailError, setInvalidEmailError] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setIsFetching(true);
 		try {
 			if (register) {
+				if (!isValidEmail(email)) {
+					setInvalidEmailError(true);
+					return;
+				}
+
 				const user = await UsersApi.register({ username, email, password });
+
 				onSuccessfulAuthentication(user);
 			} else {
 				const user = await UsersApi.login({ username, password });
@@ -57,8 +65,14 @@ const AuthModal = ({ register, onSuccessfulAuthentication }: Props) => {
 						value={email}
 						type='text'
 						id='email'
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							setInvalidEmailError(false);
+						}}
 					/>
+					{invalidEmailError && (
+						<p className={styles.authScreenEmailError}>Invalid email</p>
+					)}
 				</div>
 			)}
 			<div className={styles.authScreenInput}>
