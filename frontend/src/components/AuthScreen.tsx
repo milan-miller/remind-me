@@ -14,9 +14,11 @@ const AuthModal = ({ register, onSuccessfulAuthentication }: Props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [revealPassword, setRevealPassword] = useState(false);
+	const [isFetching, setIsFetching] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setIsFetching(true);
 		try {
 			if (register) {
 				const user = await UsersApi.register({ username, email, password });
@@ -27,6 +29,8 @@ const AuthModal = ({ register, onSuccessfulAuthentication }: Props) => {
 			}
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsFetching(false);
 		}
 	};
 
@@ -73,8 +77,12 @@ const AuthModal = ({ register, onSuccessfulAuthentication }: Props) => {
 					onMouseUp={() => setRevealPassword(false)}
 				/>
 			</div>
-			<button className={styles.authScreenButton} type='submit'>
-				{register ? 'Register' : 'Login'}
+			<button
+				disabled={isFetching ? true : false}
+				className={styles.authScreenButton}
+				type='submit'
+			>
+				{isFetching ? '...' : register ? 'Register' : 'Login'}
 			</button>
 		</form>
 	);
