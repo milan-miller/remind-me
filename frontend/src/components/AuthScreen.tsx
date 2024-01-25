@@ -16,10 +16,21 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 	const [revealPassword, setRevealPassword] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
 	const [invalidEmailError, setInvalidEmailError] = useState(false);
+	const [invalidUsernameError, setInvalidUsernameError] = useState(false);
+	const [invalidPasswordError, setInvalidPasswordError] = useState(false);
 	const [registerMode, setRegisterMode] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!username) {
+			setInvalidUsernameError(true);
+		}
+
+		if (!password) {
+			setInvalidPasswordError(true);
+		}
+
 		setIsFetching(true);
 		try {
 			if (registerMode) {
@@ -55,8 +66,14 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 						value={username}
 						type='text'
 						id='username'
-						onChange={(e) => setUsername(e.target.value)}
+						onChange={(e) => {
+							setInvalidUsernameError(false);
+							setUsername(e.target.value);
+						}}
 					/>
+					{invalidUsernameError && (
+						<p className={styles.authScreenEmailError}>Invalid username</p>
+					)}
 				</div>
 				{registerMode && (
 					<div className={styles.authScreenInput}>
@@ -83,7 +100,10 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 						value={password}
 						type={revealPassword ? 'text' : 'password'}
 						id='password'
-						onChange={(e) => setPassword(e.target.value)}
+						onChange={(e) => {
+							setInvalidPasswordError(false);
+							setPassword(e.target.value);
+						}}
 					/>
 					<Eye
 						className={styles.authScreenEye}
@@ -91,6 +111,9 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 						onMouseDown={() => setRevealPassword(true)}
 						onMouseUp={() => setRevealPassword(false)}
 					/>
+					{invalidPasswordError && (
+						<p className={styles.authScreenEmailError}>Invalid password</p>
+					)}
 				</div>
 				<button
 					disabled={isFetching ? true : false}
@@ -103,6 +126,12 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 			<button
 				className={styles.authScreenLoginRegisterButton}
 				onClick={() => {
+					setUsername('');
+					setInvalidUsernameError(false);
+					setEmail('');
+					setInvalidEmailError(false);
+					setPassword('');
+					setInvalidPasswordError(false);
 					setRegisterMode(!registerMode);
 				}}
 				type='button'

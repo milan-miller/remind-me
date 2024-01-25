@@ -9,7 +9,7 @@
 	position: relative;
 	overflow: hidden;
 	width: 20rem;
-	min-height: 28rem;
+	min-height: 29rem;
 	justify-content: space-between;
 }
 
@@ -23,7 +23,7 @@
 	z-index: -1;
 	clip-path: ellipse(89% 28% at 21% 6%);
 	background-color: #bf5f8d;
-	margin-bottom: 5rem;
+	margin-bottom: 5.5rem;
 }
 
 .authScreenHeader {
@@ -53,6 +53,7 @@
 	cursor: pointer;
 	box-shadow: 2px 5px 7px 3px rgba(0, 0, 0, 0.2);
 	min-width: 5rem;
+	margin-top: 1rem;
 }
 
 .authScreenInput {
