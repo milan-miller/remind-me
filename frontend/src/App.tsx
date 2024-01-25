@@ -1,118 +1,27 @@
-import { useEffect, useState } from 'react';
-import { INote } from './models/note';
-import Note from './components/Note';
-import './App.css';
-import NoteList from './components/NoteList';
-import * as NotesApi from './network/notes_api';
-import AddEditNoteModal from './components/AddEditNoteModal';
-import { ReactComponent as Plus } from './assets/plus.svg';
-import { MutatingDots } from 'react-loader-spinner';
 import AuthScreen from './components/AuthScreen';
 import { User } from './models/user';
 import NavBar from './components/NavBar';
+import { useState } from 'react';
+import './App.css';
+import LoggedInView from './components/LoggedInView';
 
 function App() {
-	const [notes, setNotes] = useState<INote[]>([]);
-	const [notesLoading, setNotesLoading] = useState(true);
-	const [showNotesLoadingError, setShowNotesLoadingError] = useState(false);
-	const [showAddNoteModal, setShowAddNoteModal] = useState(false);
-	const [noteToEdit, setNoteToEdit] = useState<INote | null>(null);
 	const [authenticatedUser, setAutheticatedUser] = useState<User | null>(null);
-
-	useEffect(() => {
-		const getNotes = async () => {
-			try {
-				setNotesLoading(true);
-				setShowNotesLoadingError(false);
-				const notes = await NotesApi.fetchNotes();
-
-				setNotes(notes);
-			} catch (error) {
-				console.error(error);
-				setShowNotesLoadingError(true);
-			} finally {
-				setNotesLoading(false);
-			}
-		};
-
-		getNotes();
-	}, []);
-
-	const deleteNote = async (note: INote) => {
-		try {
-			await NotesApi.deleteNote(note._id);
-			setNotes(notes.filter((existingNote) => existingNote._id !== note._id));
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	return (
 		<div className='App'>
-			{showAddNoteModal && noteToEdit === null && (
-				<AddEditNoteModal
-					setNotes={(note) => setNotes([...notes, note])}
-					cancelModal={() => setShowAddNoteModal(false)}
-					setNoteToEdit={() => setNoteToEdit(null)}
-				/>
-			)}
-			{showAddNoteModal && noteToEdit && (
-				<AddEditNoteModal
-					setNotes={(note) => {
-						setNotes(
-							notes.map((existingNote) =>
-								existingNote._id === note._id ? note : existingNote
-							)
-						);
-					}}
-					cancelModal={() => setShowAddNoteModal(false)}
-					noteToEdit={noteToEdit}
-					setNoteToEdit={() => setNoteToEdit(null)}
-				/>
-			)}
-
 			<NavBar
 				unauthenticateUser={() => setAutheticatedUser(null)}
 				user={authenticatedUser}
 			/>
-			<button
-				className='button'
-				onClick={() => setShowAddNoteModal(!showAddNoteModal)}
-			>
-				<Plus className='plus' />
-				Add Note
-			</button>
-			{notesLoading && (
-				<MutatingDots
-					visible={true}
-					height='100'
-					width='100'
-					color='#bf5f8d'
-					secondaryColor='#bf5f8d'
-					radius='12.5'
-					ariaLabel='mutating-dots-loading'
-					wrapperStyle={{}}
-					wrapperClass=''
+			{authenticatedUser ? (
+				<LoggedInView />
+			) : (
+				<AuthScreen
+					register={true}
+					onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
 				/>
 			)}
-			{showNotesLoadingError && <p className='error'>Something went wrong!</p>}
-			{!notesLoading && !showNotesLoadingError && (
-				<NoteList>
-					{notes.map((note) => (
-						<Note
-							key={note._id}
-							note={note}
-							onDeleteNoteClicked={deleteNote}
-							setNoteToEdit={(note: INote) => setNoteToEdit(note)}
-							showAddNoteModal={() => setShowAddNoteModal(true)}
-						/>
-					))}
-				</NoteList>
-			)}
-			<AuthScreen
-				register={true}
-				onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
-			/>
 		</div>
 	);
 }

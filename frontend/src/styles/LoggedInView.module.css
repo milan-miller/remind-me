@@ -1,0 +1,24 @@
+.loggedInViewButton {
+	padding: 0.8rem;
+	background-color: #0f6cff;
+	color: #fff;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	box-shadow: 2px 5px 7px 3px rgba(0, 0, 0, 0.2);
+	display: flex;
+	align-items: center;
+	font-weight: bold;
+}
+
+.loggedInViewButton:focus {
+	outline: none;
+	border: 0;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.plus {
+	fill: #fff;
+	height: 0.9rem;
+	width: 1.2rem;
+}
