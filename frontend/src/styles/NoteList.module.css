@@ -11,25 +11,25 @@
 	justify-content: space-evenly;
 }
 
-@media only screen and (max-width: 1348px) {
+@media only screen and (max-width: 84.25em) {
 	.noteListContainer {
 		grid-template-columns: repeat(4, auto);
 	}
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 80em) {
 	.noteListContainer {
 		grid-template-columns: repeat(3, auto);
 	}
 }
 
-@media only screen and (max-width: 884px) {
+@media only screen and (max-width: 55.25em) {
 	.noteListContainer {
 		grid-template-columns: repeat(2, auto);
 	}
 }
 
-@media only screen and (max-width: 604px) {
+@media only screen and (max-width: 37.75em) {
 	.noteListContainer {
 		grid-template-columns: repeat(1, auto);
 	}

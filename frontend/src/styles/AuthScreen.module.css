@@ -79,3 +79,9 @@
 	position: absolute;
 	bottom: -35px;
 }
+
+@media only screen and (max-width: 33.5em) {
+	.authScreen {
+		width: 15rem;
+	}
+}

@@ -4,12 +4,12 @@ import Note from './components/Note';
 import './App.css';
 import NoteList from './components/NoteList';
 import * as NotesApi from './network/notes_api';
-import logo from './assets/remind-me-logo.png';
 import AddEditNoteModal from './components/AddEditNoteModal';
 import { ReactComponent as Plus } from './assets/plus.svg';
 import { MutatingDots } from 'react-loader-spinner';
 import AuthScreen from './components/AuthScreen';
 import { User } from './models/user';
+import NavBar from './components/NavBar';
 
 function App() {
 	const [notes, setNotes] = useState<INote[]>([]);
@@ -71,7 +71,10 @@ function App() {
 				/>
 			)}
 
-			<img src={logo} alt='logo' className='logo' />
+			<NavBar
+				unauthenticateUser={() => setAutheticatedUser(null)}
+				user={authenticatedUser}
+			/>
 			<button
 				className='button'
 				onClick={() => setShowAddNoteModal(!showAddNoteModal)}

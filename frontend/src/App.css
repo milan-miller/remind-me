@@ -32,19 +32,6 @@
 	width: 1.2rem;
 }
 
-.logo {
-	height: 90px;
-	padding: 1rem;
-}
-
 .error {
 	color: #000;
-}
-
-@media only screen and (max-width: 604px) {
-	.logo {
-		width: 16rem;
-		height: 4rem;
-		padding: 1rem;
-	}
 }
