@@ -27,11 +27,11 @@
 
 @media only screen and (max-width: 33.5em) {
 	.navBar {
-		height: 8rem;
+		height: 7rem;
 	}
 
 	.navBarLogo {
-		height: 5.5rem;
+		height: 4.5rem;
 	}
 
 	.navBarLogoutButton {
