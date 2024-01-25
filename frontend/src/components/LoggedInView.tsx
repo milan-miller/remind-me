@@ -70,7 +70,7 @@ const LoggedInView = () => {
 				className={styles.loggedInViewButton}
 				onClick={() => setShowAddNoteModal(!showAddNoteModal)}
 			>
-				<Plus className='plus' />
+				<Plus className={styles.plus} />
 				Add Note
 			</button>
 			{notesLoading && (
