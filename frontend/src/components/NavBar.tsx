@@ -3,7 +3,7 @@ import { User } from '../models/user';
 import styles from '../styles/NavBar.module.css';
 import { ReactComponent as Logout } from '../assets/log-out.svg';
 import * as UsersApi from '../network/users_api';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
 	user: User | null;
@@ -25,11 +25,13 @@ const NavBar = ({ user, unauthenticateUser }: Props) => {
 
 	return (
 		<div className={styles.navBar}>
-			<Link to='/'>
-				<img src={logo} alt='logo' className={styles.navBarLogo} />
-			</Link>
+			<img src={logo} alt='logo' className={styles.navBarLogo} />
 			{user && (
-				<Logout onClick={logoutUser} className={styles.navBarLogoutButton} />
+				<Logout
+					onClick={logoutUser}
+					className={styles.navBarLogoutButton}
+					title='logout'
+				/>
 			)}
 		</div>
 	);
