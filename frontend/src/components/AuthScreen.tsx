@@ -13,20 +13,29 @@ interface Props {
 	isLoading: boolean;
 }
 
+const initialInputStates = {
+	username: '',
+	email: '',
+	password: '',
+};
+
+const initialInputErrors = {
+	username: false,
+	email: false,
+	password: false,
+};
+
 const AuthScreen = ({
 	onSuccessfulAuthentication,
 	registerMode,
 	user,
 	isLoading,
 }: Props) => {
-	const [username, setUsername] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [inputStates, setInputStates] = useState(initialInputStates);
+	const [inputErrors, setInputErrors] = useState(initialInputErrors);
 	const [revealPassword, setRevealPassword] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
-	const [invalidEmailError, setInvalidEmailError] = useState(false);
-	const [invalidUsernameError, setInvalidUsernameError] = useState(false);
-	const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -38,29 +47,29 @@ const AuthScreen = ({
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if (!username) {
-			setInvalidUsernameError(true);
+		if (!inputStates.username) {
+			setInputErrors((prevState) => ({ ...prevState, username: true }));
 		}
 
-		if (!password) {
-			setInvalidPasswordError(true);
+		if (!inputStates.password) {
+			setInputErrors((prevState) => ({ ...prevState, password: true }));
 		}
 
 		setIsFetching(true);
 		try {
 			if (registerMode) {
-				if (!isValidEmail(email)) {
-					setInvalidEmailError(true);
+				if (!isValidEmail(inputStates.email)) {
+					setInputErrors((prevState) => ({ ...prevState, email: true }));
 					return;
 				}
-				if (!username || !password) return;
-				const user = await UsersApi.register({ username, email, password });
+				if (!inputStates.username || !inputStates.password) return;
+				const user = await UsersApi.register(inputStates);
 
 				onSuccessfulAuthentication(user);
 				navigate('/notes');
 			} else {
-				if (!username || !password) return;
-				const user = await UsersApi.login({ username, password });
+				if (!inputStates.username || !inputStates.password) return;
+				const user = await UsersApi.login(inputStates);
 				onSuccessfulAuthentication(user);
 				navigate('/notes');
 			}
@@ -72,12 +81,8 @@ const AuthScreen = ({
 	};
 
 	const resetAllInputState = () => {
-		setUsername('');
-		setInvalidUsernameError(false);
-		setEmail('');
-		setInvalidEmailError(false);
-		setPassword('');
-		setInvalidPasswordError(false);
+		setInputStates(initialInputStates);
+		setInputErrors(initialInputErrors);
 	};
 
 	// Avoid flickering when refreshing
@@ -93,15 +98,21 @@ const AuthScreen = ({
 					<label htmlFor='username'>Username:</label>
 					<input
 						className={styles.authScreenInput}
-						value={username}
+						value={inputStates.username}
 						type='text'
 						id='username'
 						onChange={(e) => {
-							setInvalidUsernameError(false);
-							setUsername(e.target.value);
+							setInputErrors((prevState) => ({
+								...prevState,
+								username: false,
+							}));
+							setInputStates((prevState) => ({
+								...prevState,
+								username: e.target.value,
+							}));
 						}}
 					/>
-					{invalidUsernameError && (
+					{inputErrors.username && (
 						<p className={styles.authScreenEmailError}>Invalid username</p>
 					)}
 				</div>
@@ -110,15 +121,21 @@ const AuthScreen = ({
 						<label htmlFor='email'>Email:</label>
 						<input
 							className={styles.authScreenInput}
-							value={email}
+							value={inputStates.email}
 							type='text'
 							id='email'
 							onChange={(e) => {
-								setEmail(e.target.value);
-								setInvalidEmailError(false);
+								setInputErrors((prevState) => ({
+									...prevState,
+									email: false,
+								}));
+								setInputStates((prevState) => ({
+									...prevState,
+									email: e.target.value,
+								}));
 							}}
 						/>
-						{invalidEmailError && (
+						{inputErrors.email && (
 							<p className={styles.authScreenEmailError}>Invalid email</p>
 						)}
 					</div>
@@ -127,12 +144,18 @@ const AuthScreen = ({
 					<label htmlFor='password'>Password:</label>
 					<input
 						className={styles.authScreenInput}
-						value={password}
+						value={inputStates.password}
 						type={revealPassword ? 'text' : 'password'}
 						id='password'
 						onChange={(e) => {
-							setInvalidPasswordError(false);
-							setPassword(e.target.value);
+							setInputErrors((prevState) => ({
+								...prevState,
+								password: false,
+							}));
+							setInputStates((prevState) => ({
+								...prevState,
+								password: e.target.value,
+							}));
 						}}
 					/>
 					<Eye
@@ -143,7 +166,7 @@ const AuthScreen = ({
 						onTouchStart={() => setRevealPassword(true)}
 						onTouchEnd={() => setRevealPassword(false)}
 					/>
-					{invalidPasswordError && (
+					{inputErrors.password && (
 						<p className={styles.authScreenEmailError}>Invalid password</p>
 					)}
 				</div>
@@ -165,4 +188,5 @@ const AuthScreen = ({
 		</>
 	);
 };
+
 export default AuthScreen;
