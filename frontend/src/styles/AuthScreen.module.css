@@ -81,16 +81,10 @@
 	bottom: -35px;
 }
 
-.authScreenLoginRegisterButton {
-	border: none;
-	background: none;
-	padding: 0;
-	margin: 0;
-	font: inherit;
+.authScreenLink {
 	cursor: pointer;
 	outline: none;
 	color: #0095f6;
-	text-decoration: underline;
 }
 
 @media only screen and (max-width: 33.5em) {

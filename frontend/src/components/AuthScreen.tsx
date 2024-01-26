@@ -1,15 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as UsersApi from '../network/users_api';
 import { User } from '../models/user';
 import styles from '../styles/AuthScreen.module.css';
 import { ReactComponent as Eye } from '../assets/eye.svg';
 import { isValidEmail } from '../utils/isValidEmail';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Props {
 	onSuccessfulAuthentication: (user: User) => void;
+	registerMode: boolean;
+	user: User | null;
+	isLoading: boolean;
 }
 
-const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
+const AuthScreen = ({
+	onSuccessfulAuthentication,
+	registerMode,
+	user,
+	isLoading,
+}: Props) => {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -18,7 +27,13 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 	const [invalidEmailError, setInvalidEmailError] = useState(false);
 	const [invalidUsernameError, setInvalidUsernameError] = useState(false);
 	const [invalidPasswordError, setInvalidPasswordError] = useState(false);
-	const [registerMode, setRegisterMode] = useState(false);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (user) {
+			navigate('/notes');
+		}
+	}, [navigate, user]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -38,13 +53,16 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 					setInvalidEmailError(true);
 					return;
 				}
-
+				if (!username || !password) return;
 				const user = await UsersApi.register({ username, email, password });
 
 				onSuccessfulAuthentication(user);
+				navigate('/notes');
 			} else {
+				if (!username || !password) return;
 				const user = await UsersApi.login({ username, password });
 				onSuccessfulAuthentication(user);
+				navigate('/notes');
 			}
 		} catch (error) {
 			console.error(error);
@@ -52,6 +70,18 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 			setIsFetching(false);
 		}
 	};
+
+	const resetAllInputState = () => {
+		setUsername('');
+		setInvalidUsernameError(false);
+		setEmail('');
+		setInvalidEmailError(false);
+		setPassword('');
+		setInvalidPasswordError(false);
+	};
+
+	// Avoid flickering when refreshing
+	if (isLoading) return null;
 
 	return (
 		<>
@@ -123,22 +153,14 @@ const AuthModal = ({ onSuccessfulAuthentication }: Props) => {
 					{isFetching ? '...' : registerMode ? 'Register' : 'Login'}
 				</button>
 			</form>
-			<button
-				className={styles.authScreenLoginRegisterButton}
-				onClick={() => {
-					setUsername('');
-					setInvalidUsernameError(false);
-					setEmail('');
-					setInvalidEmailError(false);
-					setPassword('');
-					setInvalidPasswordError(false);
-					setRegisterMode(!registerMode);
-				}}
-				type='button'
+			<Link
+				to={registerMode ? '/' : '/register'}
+				className={styles.authScreenLoginRegisterLink}
+				onClick={() => resetAllInputState()}
 			>
 				{registerMode ? 'Already have an account?' : `Don't have an account?`}
-			</button>
+			</Link>
 		</>
 	);
 };
-export default AuthModal;
+export default AuthScreen;
