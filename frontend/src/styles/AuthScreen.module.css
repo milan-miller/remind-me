@@ -68,10 +68,13 @@
 
 .authScreenEye {
 	position: absolute;
-	bottom: 1.3rem;
-	right: 0.2rem;
+	bottom: 1rem;
+	right: -0.5rem;
 	fill: #bf5f8d;
 	cursor: pointer;
+	height: 2rem;
+	padding: 0rem 0.5rem;
+	width: 1.5rem;
 }
 
 .authScreenEmailError {

@@ -1,9 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
+*:focus {
+	outline: none;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	color: #000;
 	font-family: 'Roboto', sans-serif;
+	user-select: none;
 }

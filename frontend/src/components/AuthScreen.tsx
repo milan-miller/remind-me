@@ -140,6 +140,8 @@ const AuthScreen = ({
 						title='reveal password'
 						onMouseDown={() => setRevealPassword(true)}
 						onMouseUp={() => setRevealPassword(false)}
+						onTouchStart={() => setRevealPassword(true)}
+						onTouchEnd={() => setRevealPassword(false)}
 					/>
 					{invalidPasswordError && (
 						<p className={styles.authScreenEmailError}>Invalid password</p>
