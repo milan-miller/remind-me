@@ -29,45 +29,53 @@ function App() {
 	}, []);
 
 	return (
-		<div className='App'>
-			<NavBar
-				unauthenticateUser={() => setAutheticatedUser(null)}
-				user={authenticatedUser}
-			/>
-			<Routes>
-				<Route
-					path='/notes'
-					element={
-						<ProtectedRoute user={authenticatedUser}>
-							<NotesPage />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path='/'
-					element={
-						<AuthScreen
-							isLoading={isLoading}
-							user={authenticatedUser}
-							registerMode={false}
-							onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
+		<>
+			{isLoading ? null : (
+				<div className='App'>
+					<NavBar
+						unauthenticateUser={() => setAutheticatedUser(null)}
+						user={authenticatedUser}
+					/>
+					<Routes>
+						<Route
+							path='/notes'
+							element={
+								<ProtectedRoute user={authenticatedUser}>
+									<NotesPage />
+								</ProtectedRoute>
+							}
 						/>
-					}
-				/>
-				<Route
-					path='/register'
-					element={
-						<AuthScreen
-							isLoading={isLoading}
-							user={authenticatedUser}
-							registerMode={true}
-							onSuccessfulAuthentication={(user) => setAutheticatedUser(user)}
+						<Route
+							path='/'
+							element={
+								<AuthScreen
+									isLoading={isLoading}
+									user={authenticatedUser}
+									registerMode={false}
+									onSuccessfulAuthentication={(user) =>
+										setAutheticatedUser(user)
+									}
+								/>
+							}
 						/>
-					}
-				/>
-				<Route path='/*' element={<NotFoundPage />} />
-			</Routes>
-		</div>
+						<Route
+							path='/register'
+							element={
+								<AuthScreen
+									isLoading={isLoading}
+									user={authenticatedUser}
+									registerMode={true}
+									onSuccessfulAuthentication={(user) =>
+										setAutheticatedUser(user)
+									}
+								/>
+							}
+						/>
+						<Route path='/*' element={<NotFoundPage />} />
+					</Routes>
+				</div>
+			)}
+		</>
 	);
 }
 
