@@ -155,7 +155,7 @@ const AuthScreen = ({
 			</form>
 			<Link
 				to={registerMode ? '/' : '/register'}
-				className={styles.authScreenLoginRegisterLink}
+				className={styles.authScreenLink}
 				onClick={() => resetAllInputState()}
 			>
 				{registerMode ? 'Already have an account?' : `Don't have an account?`}
