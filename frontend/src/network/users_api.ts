@@ -16,13 +16,16 @@ export interface RegisterCredentials {
 export async function register(
 	credentials: RegisterCredentials
 ): Promise<User> {
-	const response = await fetchData('/api/users/register', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(credentials),
-	});
+	const response = await fetchData(
+		'https://remind-me-t757.onrender.com/api/users/register',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(credentials),
+		}
+	);
 	return response.json();
 }
 
@@ -32,16 +35,21 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-	const response = await fetchData('/api/users/login', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(credentials),
-	});
+	const response = await fetchData(
+		'https://remind-me-t757.onrender.com/api/users/login',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(credentials),
+		}
+	);
 	return response.json();
 }
 
 export async function logout() {
-	await fetchData('/api/users/logout', { method: 'POST' });
+	await fetchData('https://remind-me-t757.onrender.com/api/users/logout', {
+		method: 'POST',
+	});
 }
