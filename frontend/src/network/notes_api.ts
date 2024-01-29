@@ -2,9 +2,12 @@ import { INote } from '../models/note';
 import { fetchData } from './api';
 
 export async function fetchNotes(): Promise<INote[]> {
-	const response = await fetchData('/api/notes', {
-		method: 'GET',
-	});
+	const response = await fetchData(
+		'https://remind-me-t757.onrender.com/api/notes',
+		{
+			method: 'GET',
+		}
+	);
 
 	return await response.json();
 }

@@ -2,7 +2,10 @@ import { User } from '../models/user';
 import { fetchData } from './api';
 
 export async function getLoggedInUser(): Promise<User> {
-	const response = await fetchData('/api/users', { method: 'GET' });
+	const response = await fetchData(
+		'https://remind-me-t757.onrender.com/api/users',
+		{ method: 'GET' }
+	);
 
 	return response.json();
 }
