@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(
 	cors({
-		origin: ['http://localhost:3000', 'https://remind-me-blue.vercel.app/'],
+		origin: ['http://localhost:3000', 'https://remind-me-blue.vercel.app'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 	})
