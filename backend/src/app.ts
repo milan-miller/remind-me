@@ -8,11 +8,19 @@ import session from 'express-session';
 import env from './utils/validate_env';
 import MongoStore from 'connect-mongo';
 import { isAuth } from './middleware/auth';
+import cors from 'cors';
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(
+	cors({
+		origin: ['http://localhost:3000', 'https://remind-me-blue.vercel.app/'],
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		credentials: true,
+	})
+);
 
 app.use(
 	session({
