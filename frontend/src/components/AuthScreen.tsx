@@ -5,6 +5,7 @@ import styles from '../styles/AuthScreen.module.css';
 import { ReactComponent as Eye } from '../assets/eye.svg';
 import { isValidEmail } from '../utils/isValidEmail';
 import { Link, useNavigate } from 'react-router-dom';
+import { ConflictError, UnauthorizedError } from '../errors/http_errors';
 
 interface Props {
 	onSuccessfulAuthentication: (user: User) => void;
@@ -35,6 +36,7 @@ const AuthScreen = ({
 	const [inputErrors, setInputErrors] = useState(initialInputErrors);
 	const [revealPassword, setRevealPassword] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
+	const [httpError, setHttpError] = useState<string | null>(null);
 
 	const navigate = useNavigate();
 
@@ -74,7 +76,14 @@ const AuthScreen = ({
 				navigate('/notes');
 			}
 		} catch (error) {
-			console.error(error);
+			if (error instanceof UnauthorizedError) {
+				setHttpError(error.message);
+			} else if (error instanceof ConflictError) {
+				setHttpError(error.message);
+			} else {
+				console.error(error);
+				console.log(error);
+			}
 		} finally {
 			setIsFetching(false);
 		}
@@ -83,6 +92,7 @@ const AuthScreen = ({
 	const resetAllInputState = () => {
 		setInputStates(initialInputStates);
 		setInputErrors(initialInputErrors);
+		setHttpError(null);
 	};
 
 	// Avoid flickering when refreshing
@@ -177,6 +187,7 @@ const AuthScreen = ({
 				>
 					{isFetching ? '...' : registerMode ? 'Register' : 'Login'}
 				</button>
+				{httpError && <p className={styles.authScreenHttpError}>{httpError}</p>}
 			</form>
 			<Link
 				to={registerMode ? '/' : '/register'}

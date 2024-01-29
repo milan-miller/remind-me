@@ -95,6 +95,13 @@
 	text-decoration: underline;
 }
 
+.authScreenHttpError {
+	color: #ff0000;
+	font-weight: bold;
+	position: absolute;
+	bottom: 3.75rem;
+}
+
 @media only screen and (max-width: 33.5em) {
 	.authScreen {
 		width: 17rem;
