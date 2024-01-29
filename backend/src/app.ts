@@ -18,7 +18,6 @@ app.use(
 	cors({
 		origin: ['http://localhost:3000', 'https://remind-me-lilac.vercel.app'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-		credentials: true,
 	})
 );
 
@@ -30,8 +29,8 @@ app.use(
 		cookie: {
 			maxAge: 60 * 60 * 1000 * 24 * 7,
 			httpOnly: true,
-			sameSite: 'none',
-			secure: true,
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+			secure: process.env.NODE_ENV === 'production',
 		},
 		rolling: true,
 		store: MongoStore.create({
